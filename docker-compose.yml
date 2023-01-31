@@ -1,0 +1,26 @@
+version: "3.5"
+services:
+  java-rest-api:
+    container_name: java-rest-api
+    image: maven:3.8.7-eclipse-temurin-17
+    build: backend
+    ports:
+      - "8181:8080"
+    working_dir: /var/www/html
+    command: mvn spring-boot:run
+    volumes:
+      - /var/www/java/rest-api:/var/www/html
+    networks:
+      java-rest-api:
+        ipv4_address: 10.18.0.2
+
+
+networks:
+  java-rest-api:
+    name: ldap
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.18.0.0/16"
+          gateway: "10.18.0.1"
