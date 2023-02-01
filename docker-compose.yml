@@ -5,15 +5,34 @@ services:
     image: maven:3.8.7-eclipse-temurin-17
     build: backend
     ports:
-      - "8181:8080"
+      - "8080:8080"
     working_dir: /var/www/html
-    command: mvn spring-boot:run
+    command: ./mvnw spring-boot:run
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/api
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=test
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     volumes:
       - /var/www/java/rest-api:/var/www/html
     networks:
       java-rest-api:
         ipv4_address: 10.18.0.2
 
+  postgresql:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=api
+    networks:
+      java-rest-api:
+        ipv4_address: 10.18.0.3
 
 networks:
   java-rest-api:
