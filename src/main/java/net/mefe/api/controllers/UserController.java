@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.mefe.api.model.User;
-import net.mefe.api.repository.UserRepository;
+import net.mefe.api.service.UserService;
 
 
 @SpringBootApplication
@@ -22,22 +22,22 @@ import net.mefe.api.repository.UserRepository;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestParam String first_name, @RequestParam String last_name) {
 
-        User n = new User();
-        n.setFirstName(first_name);
-        n.setLastName(last_name);
-        userRepository.save(n);
+        User user = new User();
+        user.setFirstName(first_name);
+        user.setLastName(last_name);
+        userService.save(user);
         return "Saved";
     }
 
     @RequestMapping("/list")
     public @ResponseBody Iterable<User> getAllUsers() {
         // This returns a JSON or XML with the users
-        return userRepository.findAll();
+        return userService.findAllUsers();
     }
 
 }
