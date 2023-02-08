@@ -24,19 +24,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(path="/add") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser (@RequestParam String first_name, @RequestParam String last_name) {
+    @PostMapping(path="/add")
+    public @ResponseBody User addNewUser (
+            @RequestParam String first_name,
+            @RequestParam String last_name) {
 
         User user = new User();
         user.setFirstName(first_name);
         user.setLastName(last_name);
-        userService.save(user);
-        return "Saved";
+        return userService.save(user);
     }
 
     @RequestMapping("/list")
     public @ResponseBody Iterable<User> getAllUsers() {
-        // This returns a JSON or XML with the users
         return userService.findAllUsers();
     }
 
